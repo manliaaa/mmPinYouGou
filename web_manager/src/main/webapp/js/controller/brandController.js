@@ -10,8 +10,58 @@ app.controller("brandController",function($scope,$controller,$http,brandService)
 			$scope.list = response;
 		});
 	}
+    $scope.upload = function(){
+        var form = new FormData();
+        var file = document.getElementById("fileUpload").files[0];
+        form.append('file', file);
+        $http({
+            method: 'POST',
+            url: '../brand/getBankListByExcel.do',
+            data: form,
+            headers: {'Content-Type': undefined},
+            transformRequest: angular.identity
+        }).success(function (data) {
+            console.log('upload success');
+        }).error(function (data) {
+            console.log('upload fail');
+        })
+    }
+    $scope.import_asset = function () {
+        $("#file_asset").click();
+    };
+    $("#file_asset").on("change", function(){
+        var formData = new FormData();
+        var file = document.getElementById("file_asset").files[0];
+        if(file.name){
+            var fileName = file.name.substring(file.name.lastIndexOf(".") + 1);
+            if(fileName =="xlsx" || fileName =="xls"){
+                formData.append('file', file);
+                $http({
+                    method:"post",
+                url:'../brand/getBankListByExcel.do',
+                data:formData,
+                headers : {
+                    'Content-Type' : undefined
+                },
+                transformRequest : angular.identity
+            }).then(function (response) {
 
-	// 分页查询
+                    if(response.status == 200){
+                        alert("文件上传成功！！！");
+                        window.location.reload();
+                    }else{
+                        alert("文件上传失败！！！");
+                    }
+                });
+            }else{
+                alert("文件格式不正确，请上传以.xlsx，.xls 为后缀名的文件。");
+                $("#file_asset").val("");
+            }
+        }
+    });
+
+
+    // 分页查询
 	$scope.findByPage = function(page,rows){
 		// 向后台发送请求获取数据:
 		brandService.findByPage(page,rows).success(function(response){

@@ -4,16 +4,20 @@ import cn.itcast.core.dao.specification.SpecificationDao;
 import cn.itcast.core.dao.specification.SpecificationOptionDao;
 import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.entity.SpecEntity;
+import cn.itcast.core.pojo.good.Brand;
 import cn.itcast.core.pojo.specification.Specification;
 import cn.itcast.core.pojo.specification.SpecificationOption;
 import cn.itcast.core.pojo.specification.SpecificationOptionQuery;
 import cn.itcast.core.pojo.specification.SpecificationQuery;
+import cn.itcast.core.util.ImportExcelUtil;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -115,5 +119,26 @@ public class SpecServiceImpl implements SpecService {
     @Override
     public List<Map> selectOptionList() {
         return specDao.selectOptionList();
+    }
+
+    @Override
+    public void getBankListByExcel(String path) {
+        String filepath = "D:\\" + path;
+        File file = new File(filepath);
+        List<List<Object>> list = null;
+        try {
+            FileInputStream inputStream = new FileInputStream(new File(filepath));
+            list = ImportExcelUtil.getBankListByExcel(inputStream, filepath);
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < list.size(); i++) {
+            Specification specification = new Specification();
+            if ((list.get(i).size()==2)){
+                specification.setSpecName(String.valueOf(list.get(i).get(1)));
+            }
+            specDao.insertSelective(specification);
+        }
     }
 }

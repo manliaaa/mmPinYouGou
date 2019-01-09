@@ -4,11 +4,14 @@ import cn.itcast.core.dao.good.BrandDao;
 import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.good.Brand;
 import cn.itcast.core.pojo.good.BrandQuery;
+import cn.itcast.core.util.ImportExcelUtil;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -33,15 +36,16 @@ public class BrandServiceImpl implements BrandService {
         //创建where查询条件
         BrandQuery.Criteria criteria = brandQuery.createCriteria();
         if (brand != null) {
-            if (brand.getName() != null && !"".equals(brand.getName())){
-                criteria.andNameLike("%"+brand.getName()+"%");
+            if (brand.getName() != null && !"".equals(brand.getName())) {
+                criteria.andNameLike("%" + brand.getName() + "%");
             }
             if (brand.getFirstChar() != null && !"".equals(brand.getFirstChar())) {
-                criteria.andFirstCharLike("%"+brand.getFirstChar()+"%");
+                criteria.andFirstCharLike("%" + brand.getFirstChar() + "%");
             }
         }
         //使用分页助手的page对象接收查询到的数据, page对象继承了ArrayList所以可以接收查询到的结果集数据.
-        Page<Brand> brandList = (Page<Brand>)brandDao.selectByExample(brandQuery);
+        Page<Brand> brandList = (Page<Brand>) brandDao.selectByExample(brandQuery);
+        System.out.println();
         return new PageResult(brandList.getTotal(), brandList.getResult());
     }
 
@@ -77,9 +81,34 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+    public void getBankListByExcel(String path) {
+        String filepath = "D:\\" + path;
+        File file = new File(filepath);
+        List<List<Object>> list = null;
+        try {
+            FileInputStream inputStream = new FileInputStream(new File(filepath));
+            list = ImportExcelUtil.getBankListByExcel(inputStream, filepath);
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < list.size(); i++) {
+            Brand brand = new Brand();
+                brand.setName(String.valueOf(list.get(i).get(1)));
+            if ((list.get(i).size()==3)){
+                brand.setFirstChar(String.valueOf(list.get(i).get(2)));
+            }
+            brandDao.insertSelective(brand);
+        }
+
+    }
+
+
+
+    @Override
     public void delete(Long[] ids) {
         if (ids != null) {
-            for(Long id : ids){
+            for (Long id : ids) {
                 brandDao.deleteByPrimaryKey(id);
             }
         }

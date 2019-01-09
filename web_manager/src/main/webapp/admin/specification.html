@@ -44,12 +44,16 @@
                                         <button type="button" class="btn btn-default" title="删除" ng-click="dele()" ><i class="fa fa-trash-o"></i> 删除</button>
                                         
                                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
+										<form id="fileForm" enctype="multipart/form-data">
+											<button id="import_asset" type="button" ng-click="guige_asset()">excel导入</button>
+											<input id="guige_asset" type="file" style="display: none;"/>
+										</form>
                                     </div>
                                 </div>
                             </div>
                             <div class="box-tools pull-right">
                                 <div class="has-feedback">
-							                    规格名称：<input type="text" ng-model="searchEntity.specName" >
+							                    规格名称：<input ng-model="searchEntity.specification.specName" >
 									<button class="btn btn-default" ng-click="reloadList()">查询</button>
                                 </div>
                             </div>

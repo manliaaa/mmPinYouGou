@@ -32,7 +32,6 @@ app.controller("baseController",function($scope){
 	}
 	
 	// 定义方法：获取JSON字符串中的某个key对应值的集合
-	//第一个参数: json字符串, 第二个参数: 需要获取的数据的key
 	$scope.jsonToString = function(jsonStr,key){
 		// 将字符串转成JSOn:
 		var jsonObj = JSON.parse(jsonStr);
@@ -43,9 +42,7 @@ app.controller("baseController",function($scope){
 			if(i>0){
 				value += ",";
 			}
-
-			//jsonObj是json数组, jsonObj[i]获取json数组中的第n个元素的内容例如: 第一次循环获取到就是{"id":1,"text":"联想"}
-			//jsonObj[i][key]是获取某一个json中具体key的值, key由于传入进来的是text, 所以jsonObj[i]['text']
+			
 			value += jsonObj[i][key];
 		}
 		return value;

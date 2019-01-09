@@ -21,7 +21,7 @@
     <script type="text/javascript" src="../js/controller/baseController.js"></script>
     <script type="text/javascript" src="../js/controller/itemCatController.js"></script>
     <script type="text/javascript" src="../js/service/itemCatService.js"></script>
-    
+
 </head>
 
 <body class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="itemCatController" ng-init="findByParentId(0)">
@@ -55,7 +55,10 @@
                                         <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal" ><i class="fa fa-file-o"></i> 新建</button>
                                         <button type="button" class="btn btn-default" title="删除" ><i class="fa fa-trash-o"></i> 删除</button>
                                         <button type="button" class="btn btn-default" title="刷新" ><i class="fa fa-check"></i> 刷新</button>
-                                       
+										<form id="fileForm" enctype="multipart/form-data">
+											<button id="import_asset" type="button" ng-click="fenlei_asset()">excel导入</button>
+											<input id="fenlei_asset" type="file" style="display: none;"/>
+										</form>
                                     </div>
                                 </div>
                             </div>                          
@@ -112,8 +115,8 @@
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 			<h3 id="myModalLabel">商品分类编辑</h3>
 		</div>
-		<div class="modal-body">							
-			
+		<div class="modal-body">
+
 			<table class="table table-bordered table-striped"  width="800px">
 				<tr>
 		      		<td>上级商品分类</td>
@@ -124,17 +127,17 @@
 		      	<tr>
 		      		<td>商品分类名称</td>
 		      		<td><input  class="form-control" placeholder="商品分类名称">  </td>
-		      	</tr>			  
+		      	</tr>
 		      	<tr>
 		      		<td>类型模板</td>
-		      		<td>	      		
+		      		<td>
 		      			<input select2 config="options['type_template']" placeholder="商品类型模板" class="form-control" type="text"/>
-		      		</td>		      		      		
-		      	</tr>		      	
-			 </table>				
-			
+		      		</td>
+		      	</tr>
+			 </table>
+
 		</div>
-		<div class="modal-footer">						
+		<div class="modal-footer">
 			<button class="btn btn-success" data-dismiss="modal" aria-hidden="true">保存</button>
 			<button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
 		</div>

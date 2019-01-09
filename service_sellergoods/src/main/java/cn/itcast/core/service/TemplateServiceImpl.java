@@ -9,6 +9,7 @@ import cn.itcast.core.pojo.specification.SpecificationOptionQuery;
 import cn.itcast.core.pojo.template.TypeTemplate;
 import cn.itcast.core.pojo.template.TypeTemplateQuery;
 import cn.itcast.core.util.Constants;
+import cn.itcast.core.util.ImportExcelUtil;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -51,18 +54,17 @@ public class TemplateServiceImpl implements TemplateService {
         }
 
 
-
         //4. 分页查询, 并且将数据返回到页面展示
         PageHelper.startPage(page, rows);
         TypeTemplateQuery query = new TypeTemplateQuery();
         TypeTemplateQuery.Criteria criteria = query.createCriteria();
         if (template != null) {
-            if (template.getName() != null && !"".equals(template.getName())){
-                criteria.andNameLike("%"+template.getName()+"%");
+            if (template.getName() != null && !"".equals(template.getName())) {
+                criteria.andNameLike("%" + template.getName() + "%");
             }
         }
 
-        Page<TypeTemplate> templateList = (Page<TypeTemplate>)templateDao.selectByExample(query);
+        Page<TypeTemplate> templateList = (Page<TypeTemplate>) templateDao.selectByExample(query);
         return new PageResult(templateList.getTotal(), templateList.getResult());
     }
 
@@ -104,7 +106,7 @@ public class TemplateServiceImpl implements TemplateService {
         if (maps != null) {
             for (Map map : maps) {
                 //5. 在遍历的过程中将根据规格id获取对应的规格选项集合, 并且封装到规格对象中
-                Long specId= Long.parseLong(String.valueOf(map.get("id")));
+                Long specId = Long.parseLong(String.valueOf(map.get("id")));
 
                 SpecificationOptionQuery query = new SpecificationOptionQuery();
                 SpecificationOptionQuery.Criteria criteria = query.createCriteria();
@@ -116,5 +118,30 @@ public class TemplateServiceImpl implements TemplateService {
         }
 
         return maps;
+    }
+
+    @Override
+    public void getBankListByExcel(String path) {
+        String filepath = "D:\\" + path;
+        File file = new File(filepath);
+        List<List<Object>> list = null;
+        try {
+            FileInputStream inputStream = new FileInputStream(new File(filepath));
+            list = ImportExcelUtil.getBankListByExcel(inputStream, filepath);
+            System.out.println(list);
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < list.size(); i++) {
+            TypeTemplate typeTemplate = new TypeTemplate();
+            typeTemplate.setName(String.valueOf(list.get(i).get(1)));
+            typeTemplate.setSpecIds(String.valueOf(list.get(i).get(2)));
+            typeTemplate.setBrandIds(String.valueOf(list.get(i).get(3)));
+            if ((list.get(i).size() == 5)) {
+                typeTemplate.setCustomAttributeItems(String.valueOf(list.get(i).get(4)));
+            }
+            templateDao.insertSelective(typeTemplate);
+        }
     }
 }

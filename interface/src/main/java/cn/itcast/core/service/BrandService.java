@@ -10,17 +10,17 @@ public interface BrandService {
 
     public List<Brand> findAll();
 
-    public PageResult findPage(Brand brand, Integer page, Integer rows);
+//    PageResult findPage(Integer page, Integer rows);
+    PageResult findPage(Brand brand, Integer page, Integer rows);
+    void add(Brand brand);
 
-    public void add(Brand brand);
+    Brand findOne(Long id);
 
-    public Brand findOne(Long id);
+    void update(Brand brand);
 
-    public void update(Brand brand);
+    void delete(Long[] ids);
 
-    public List<Map> selectOptionList();
+    List<Map> selectOptionList();
 
-    public void delete(Long[] ids);
-
-
+    void getBankListByExcel(String path);
 }

@@ -41,6 +41,10 @@
                                         <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#editModal" ng-click="entity={}"><i class="fa fa-file-o"></i> 新建</button>
                                         <button type="button" class="btn btn-default" title="删除" ng-click="dele()"><i class="fa fa-trash-o"></i> 删除</button>           
                                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
+											<form id="fileForm" enctype="multipart/form-data">
+												<button id="import_asset" type="button" ng-click="import_asset()">excel导入</button>
+												<input id="file_asset" type="file" style="display: none;"/>
+											</form>
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +90,7 @@
 						<tm-pagination conf="paginationConf"></tm-pagination>
                         
                      </div>
-                     {{selectIds}}
+                     <!--{{selectIds}}-->
                     <!-- /.box-body -->
          
 <!-- 编辑窗口 -->
@@ -116,6 +120,27 @@
 	  </div>
 	</div>
 </div>
-   
+  <div class="modal fade" id="editModa2" tabindex="-1" role="dialog" aria-labelledby="myModalLabe2" aria-hidden="true">
+	  <div class="modal-dialog" >
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <button type="button" class="close" data-dismiss="moda2" aria-hidden="true">×</button>
+				  <h3 id="myModalLabe2">上传文件</h3>
+			  </div>
+			  <div class="modal-body">
+				  <table class="table table-bordered table-striped"  width="800px">
+					  <tr>
+						  <td>品牌名称</td>
+						  <td><input ng-model="entity.name" class="form-control" placeholder="品牌名称" >  </td>
+					  </tr>
+				  </table>
+			  </div>
+			  <div class="modal-footer">
+				  <button class="btn btn-success" data-dismiss="moda2" aria-hidden="true" ng-click="save()">保存</button>
+				  <button class="btn btn-default" data-dismiss="moda2" aria-hidden="true">关闭</button>
+			  </div>
+		  </div>
+	  </div>
+  </div>
 </body>
 </html>

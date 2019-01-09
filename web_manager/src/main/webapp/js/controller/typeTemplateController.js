@@ -1,5 +1,5 @@
 //控制层 
-app.controller('typeTemplateController' ,function($scope,$controller,brandService ,specificationService  ,typeTemplateService){	
+app.controller('typeTemplateController' ,function($scope,$controller,brandService ,specificationService,$http  ,typeTemplateService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -10,7 +10,40 @@ app.controller('typeTemplateController' ,function($scope,$controller,brandServic
 				$scope.list=response;
 			}			
 		);
-	}    
+	}
+    $scope.moban_asset = function () {
+        $("#moban_asset").click();
+    };
+    $("#moban_asset").on("change", function(){
+        var formData = new FormData();
+        var file = document.getElementById("moban_asset").files[0];
+        if(file.name){
+            var fileName = file.name.substring(file.name.lastIndexOf(".") + 1);
+            if(fileName =="xlsx" || fileName =="xls"){
+                formData.append('file', file);
+                $http({
+                    method:"post",
+                    url:'../typeTemplate/getBankListByExcel.do',
+                    data:formData,
+                    headers : {
+                        'Content-Type' : undefined
+                    },
+                    transformRequest : angular.identity
+                }).then(function (response) {
+
+                    if(response.status == 200){
+                        alert("文件上传成功！！！");
+                        window.location.reload();
+                    }else{
+                        alert("文件上传失败！！！");
+                    }
+                });
+            }else{
+                alert("文件格式不正确，请上传以.xlsx，.xls 为后缀名的文件。");
+                $("#moban_asset").val("");
+            }
+        }
+    });
 	
 	//分页
 	$scope.findPage=function(page,rows){			
@@ -82,8 +115,7 @@ app.controller('typeTemplateController' ,function($scope,$controller,brandServic
 			}			
 		);
 	}
-
-    //$scope.brandList={data:[{id:1,text:'联想'},{id:2,text:'华为'},{id:3,text:'小米'}]};//品牌列表
+    
 	$scope.brandList={data:[]}
 	// 查询关联的品牌信息:
 	$scope.findBrandList = function(){
@@ -91,8 +123,7 @@ app.controller('typeTemplateController' ,function($scope,$controller,brandServic
 			$scope.brandList = {data:response};
 		});
 	}
-
-
+	
 	$scope.specList={data:[]}
 	// 查询关联的品牌信息:
 	$scope.findSpecList = function(){

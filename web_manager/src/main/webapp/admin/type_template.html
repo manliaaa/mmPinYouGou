@@ -56,12 +56,16 @@
                                         <button type="button" class="btn btn-default" ng-click="dele()" title="删除"><i class="fa fa-trash-o"></i> 删除</button>
                                        
                                         <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
+										<form id="fileForm" enctype="multipart/form-data">
+											<button id="import_asset" type="button" ng-click="moban_asset()">excel导入</button>
+											<input id="moban_asset" type="file" style="display: none;"/>
+										</form>
                                     </div>
                                 </div>
                             </div>
                             <div class="box-tools pull-right">
                                 <div class="has-feedback">
-							                  分类模板名称：<input  >									
+							                  分类模板名称：<input ng-model="searchEntity.name" >
 									<button class="btn btn-default">查询</button>                                    
                                 </div>
                             </div>
@@ -88,7 +92,7 @@
 				                          <td>{{entity.id}}</td>
 									      <td>{{entity.name}}</td>
 									      <td>{{jsonToString(entity.brandIds,'text')}}</td>
-									      <td>{{jsonToString(entity.specIds,'text')}}</td>
+									      <td>{{jsonToString(entity.specIds,'text')}}</td>									 
 									      <td>{{jsonToString(entity.customAttributeItems,'text')}}</td>		                                                                  
 		                                  <td class="text-center">                                           
 		                                 	  <button type="button" class="btn bg-olive btn-xs" ng-click="findOne(entity.id)" data-toggle="modal" data-target="#editModal" >修改</button>                                           
@@ -134,8 +138,6 @@
 		      				ng-model:绑定下拉列表的id
 		      				select2-model:绑定下拉列表的id和value
 		      				config:代表的是数据的来源
-		      				multiple:写上这个属性是多选, 不写是单选
-		      				placeholder: 下拉框没有选择数据的时候默认的提示信息
 		      			 -->
 		      			<input select2 select2-model="entity.brandIds" config="brandList" multiple placeholder="支持多选哦" class="form-control" type="text"/>
 		      		</td>
@@ -145,7 +147,7 @@
 		      		<td>
 						<input select2 select2-model="entity.specIds" config="specList" multiple placeholder="支持多选哦" class="form-control" type="text"/>
 		      		</td>
-		      	</tr>	
+1		      	</tr>
 		      	
 		      	<tr>
 		      		<td>扩展属性</td>

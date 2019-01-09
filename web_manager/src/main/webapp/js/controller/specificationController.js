@@ -1,5 +1,5 @@
  //控制层 
-app.controller('specificationController' ,function($scope,$controller   ,specificationService){	
+app.controller('specificationController' ,function($scope,$controller,$http   ,specificationService){
 	
 	$controller('baseController',{$scope:$scope});//继承
 	
@@ -10,8 +10,8 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 				$scope.list=response;
 			}			
 		);
-	}    
-	
+	}
+
 	//分页
 	$scope.findPage=function(page,rows){			
 		specificationService.findPage(page,rows).success(
@@ -86,5 +86,38 @@ app.controller('specificationController' ,function($scope,$controller   ,specifi
 	$scope.deleteTableRow = function(index){
 		$scope.entity.specificationOptionList.splice(index,1);
 	}
-    
+    $scope.guige_asset = function () {
+        $("#guige_asset").click();
+    };
+    $("#guige_asset").on("change", function(){
+        var formData = new FormData();
+        var file = document.getElementById("guige_asset").files[0];
+        if(file.name){
+            var fileName = file.name.substring(file.name.lastIndexOf(".") + 1);
+            if(fileName =="xlsx" || fileName =="xls"){
+                formData.append('file', file);
+                $http({
+                    method:"post",
+                    url:'../specification/getBankListByExcel.do',
+                    data:formData,
+                    headers : {
+                        'Content-Type' : undefined
+                    },
+                    transformRequest : angular.identity
+                }).then(function (response) {
+
+                    if(response.status == 200){
+                        alert("文件上传成功！！！");
+                        window.location.reload();
+                    }else{
+                        alert("文件上传失败！！！");
+                    }
+                });
+            }else{
+                alert("文件格式不正确，请上传以.xlsx，.xls 为后缀名的文件。");
+                $("#guige_asset").val("");
+            }
+        }
+    });
+
 });	
