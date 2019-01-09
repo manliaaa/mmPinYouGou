@@ -120,7 +120,7 @@ public class SpecServiceImpl implements SpecService {
     public List<Map> selectOptionList() {
         return specDao.selectOptionList();
     }
-
+    //excel导入
     @Override
     public void getBankListByExcel(String path) {
         String filepath = "D:\\" + path;

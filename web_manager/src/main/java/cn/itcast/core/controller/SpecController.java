@@ -107,6 +107,7 @@ public class SpecController {
         List<Map> maps = specService.selectOptionList();
         return maps;
     }
+    //excel导入
     @RequestMapping("/getBankListByExcel")
     public Result uploadFile(@RequestParam(value = "file" , required = true) MultipartFile file) {
         try {

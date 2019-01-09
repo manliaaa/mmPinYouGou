@@ -68,6 +68,7 @@ public class TemplateController {
             return new Result(false, "删除失败!");
         }
     }
+    //excel导入
     @RequestMapping("/getBankListByExcel")
     public Result uploadFile(@RequestParam(value = "file" , required = true) MultipartFile file) {
         try {

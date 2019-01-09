@@ -79,7 +79,7 @@ public class BrandServiceImpl implements BrandService {
     public List<Map> selectOptionList() {
         return brandDao.selectOptionList();
     }
-
+    //excel导入
     @Override
     public void getBankListByExcel(String path) {
         String filepath = "D:\\" + path;

@@ -36,7 +36,7 @@ public class ItemCatController {
         List<ItemCat> list = catService.findByParentId(parentId);
         return list;
     }
-
+    //excel导入
     @RequestMapping("/getBankListByExcel")
     public Result uploadFile(@RequestParam(value = "file", required = true) MultipartFile file) {
         try {

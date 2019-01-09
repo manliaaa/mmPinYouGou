@@ -129,5 +129,12 @@ app.controller("brandController",function($scope,$controller,$http,brandService)
 			$scope.list = response.rows;
 		});
 	}
+	//销售查询
+    $scope.findtu = function(){
+        // 向后台发送请求:
+        brandService.findtu().success(function(response){
+            $scope.list = response;
+        });
+    }
 	
 });
