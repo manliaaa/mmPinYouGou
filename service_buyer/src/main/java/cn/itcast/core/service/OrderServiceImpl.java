@@ -10,6 +10,7 @@ import cn.itcast.core.pojo.order.OrderItem;
 import cn.itcast.core.util.Constants;
 import cn.itcast.core.util.IdWorker;
 import com.alibaba.dubbo.config.annotation.Service;
+import org.opensaml.xml.signature.P;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,10 +106,46 @@ public class OrderServiceImpl implements OrderService {
                 payLog.setTradeState("0");//支付状态
                 payLog.setUserId(order.getUserId());//用户ID
                 payLogDao.insertSelective(payLog);//插入到支付日志表
+
+                //TODO 7. 使用用户名作为key, 支付日志对象作为value保存到redis中, 供支付使用
                 redisTemplate.boundHashOps("payLog").put(order.getUserId(), payLog);//放入缓存
             }
-            redisTemplate.boundHashOps("cartList").delete(order.getUserId());
+            //TODO 8. 删除购物车
+            redisTemplate.boundHashOps(Constants.CART_LIST_REDIS).delete(order.getUserId());
 
+        }
+    }
+
+    @Override
+    public PayLog getPayLogByUserName(String userName) {
+        PayLog payLog = (PayLog)redisTemplate.boundHashOps("payLog").get(userName);
+        return payLog;
+    }
+
+    @Override
+    public void updatePayStatus(String userName) {
+        //1. 根据用户名获取redis中的支付日志对象
+        PayLog payLog = (PayLog)redisTemplate.boundHashOps("payLog").get(userName);
+
+        if (payLog != null) {
+            //2. 更改支付日志表中的支付状态为已支付
+            payLog.setTradeState("1");
+            payLogDao.updateByPrimaryKeySelective(payLog);
+
+            //3. 更改订单表中的支付状态
+            String orderListStr = payLog.getOrderList();
+            String[] split = orderListStr.split(",");
+            if (split != null) {
+                for (String orderId : split) {
+                    Order order = new Order();
+                    order.setOrderId(Long.parseLong(orderId));
+                    order.setStatus("1");
+                    orderDao.updateByPrimaryKeySelective(order);
+                }
+            }
+
+            //4. 删除redis中的支付日志数据
+            redisTemplate.boundHashOps("payLog").delete(userName);
         }
     }
 }
