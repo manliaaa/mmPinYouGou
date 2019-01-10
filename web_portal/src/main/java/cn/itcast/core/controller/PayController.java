@@ -71,7 +71,6 @@ public class PayController {
                 orderService.updatePayStatus(userName);
                 break;
             }
-
             //每3秒查一次
             try {
                 Thread.sleep(3000);
@@ -88,5 +87,10 @@ public class PayController {
 
         }
         return result;
+    }
+    //支付订单超时关闭
+    @RequestMapping("/PayStatus")
+    public void PayStatus(String out_trade_no){
+        payService.PayStatus(out_trade_no);
     }
 }

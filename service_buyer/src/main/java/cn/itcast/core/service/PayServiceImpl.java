@@ -5,6 +5,8 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.wxpay.sdk.WXPayUtil;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +33,7 @@ public class PayServiceImpl implements PayService {
     public Map createNative(String outTradeNo, String totolFee) {
         //1.创建参数
         Map<String,String> param=new HashMap();//创建参数
+        String time_expireTime=getOrderExpireTime(2*60*1000L);
         param.put("appid", appid);//公众号
         param.put("mch_id", partner);//商户号
         param.put("nonce_str", WXPayUtil.generateNonceStr());//随机字符串
@@ -40,7 +43,7 @@ public class PayServiceImpl implements PayService {
         param.put("spbill_create_ip", "127.0.0.1");//IP
         param.put("notify_url", "http://www.itcast.cn");//回调地址(随便写)
         param.put("trade_type", "NATIVE");//交易类型
-
+        param.put("time_expire",time_expireTime);
         try {
             //2.生成要发送的xml, 调用微信sdk的api, 将java对象转成xml
             String xmlParam = WXPayUtil.generateSignedXml(param, partnerkey);
@@ -92,4 +95,43 @@ public class PayServiceImpl implements PayService {
         }
 
     }
+    //支付订单超时关闭
+    @Override
+    public Map<String, String> PayStatus(String out_trade_no) {
+        Map param=new HashMap();
+        System.out.println(out_trade_no);
+        param.put("appid", appid);//公众账号ID
+        param.put("mch_id", partner);//商户号
+        param.put("out_trade_no", out_trade_no);//订单号
+        param.put("nonce_str", WXPayUtil.generateNonceStr());//随机字符串
+        String url="https://api.mch.weixin.qq.com/pay/closeorder";
+
+        try {
+            String xmlParam = WXPayUtil.generateSignedXml(param, partnerkey);
+            HttpClient client=new HttpClient(url);
+            client.setHttps(true);
+            client.setXmlParam(xmlParam);
+            client.post();
+            String result = client.getContent();
+            Map<String, String> map = WXPayUtil.xmlToMap(result);
+            System.out.println(map);
+            return map;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 设置微信二维码失效时间，并返回具体失效的时间点
+     * @param expire 二维码的有效时间，单位是毫秒
+     * @return
+     */
+    public static String getOrderExpireTime(Long expire){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date now = new Date();
+        Date afterDate = new Date(now .getTime() + expire);
+        return sdf.format(afterDate );
+    }
+
 }

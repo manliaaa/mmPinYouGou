@@ -83,7 +83,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public void getBankListByExcel(String path) {
         String filepath = "D:\\" + path;
-        File file = new File(filepath);
+//        File file = new File(filepath);
         List<List<Object>> list = null;
         try {
             FileInputStream inputStream = new FileInputStream(new File(filepath));

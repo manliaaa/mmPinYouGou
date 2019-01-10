@@ -1,4 +1,4 @@
-app.controller('payController' ,function($scope ,$location,payService){
+app.controller('payController' ,function($scope ,$location,payService,$interval,$http){
 	
 	
 	$scope.createNative=function(){
@@ -39,10 +39,19 @@ app.controller('payController' ,function($scope ,$location,payService){
 			}		
 		);		
 	}
-	
-	//获取金额
-	$scope.getMoney=function(){
-		return $location.search()['money'];
-	}
-	
+    $scope.time= 30*60*1000; //30分钟
+
+    $one_minute = $interval(function(){
+        $scope.time -= 1000;
+        var out_trade_no = $scope.out_trade_no;
+        if($scope.time == 0){
+            $http({
+                method:"get",
+                url:'../pay/PayStatus.do?out_trade_no='+out_trade_no,
+                data:"",
+            }).then(function (response) {
+            });
+		}
+    },1000);
+
 });

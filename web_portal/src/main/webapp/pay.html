@@ -62,7 +62,9 @@
 				</div>				
 				<div class="checkout-steps">
 					<div class="fl weixin">微信支付</div>
-                    <div class="fl sao"> 
+					<!--支付订单超时关闭-->
+					<div>距离订单关闭还剩<span type="color:red">{{time | date:'mm:ss'}}</span>秒，请及时付款。</div>
+					<div class="fl sao">
                         <p class="red"></p>                      
                         <div class="fl code">
                             <img id="qrious">
