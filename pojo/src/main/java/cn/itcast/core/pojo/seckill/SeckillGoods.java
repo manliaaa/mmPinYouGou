@@ -1,5 +1,7 @@
 package cn.itcast.core.pojo.seckill;
 
+import org.apache.solr.client.solrj.beans.Field;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,31 +12,37 @@ public class SeckillGoods implements Serializable {
     /**
      * spu ID
      */
+    @Field("seckill_goodsid")
     private Long goodsId;
 
     /**
      * sku ID
      */
+    @Field("seckill_itemid")
     private Long itemId;
 
     /**
      * 标题
      */
+    @Field("seckill_title")
     private String title;
 
     /**
      * 商品图片
      */
+    @Field("seckill_image")
     private String smallPic;
 
     /**
      * 原价格
      */
+    @Field("seckill_price")
     private BigDecimal price;
 
     /**
      * 秒杀价格
      */
+    @Field("seckill_costprice")
     private BigDecimal costPrice;
 
     /**

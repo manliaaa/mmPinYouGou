@@ -26,7 +26,7 @@
         <!-- custom-filter为过滤器， position 表示将过滤器放在指定的位置上，before表示放在指定位置之前  ，after表示放在指定的位置之后  -->           
         <custom-filter ref="casAuthenticationFilter"  position="CAS_FILTER" />      
         <custom-filter ref="requestSingleLogoutFilter" before="LOGOUT_FILTER"/>  
-        <custom-filter ref="singleLogoutFilter" before="CAS_FILTER"/>  
+        <custom-filter ref="singleLogoutFilter" before="CAS_FILTER"/>
     </http>
     
   	<!-- CAS入口点 开始 -->
@@ -77,7 +77,7 @@
     <beans:bean id="singleLogoutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter"/>    
     <!-- 经过此配置，当用户在地址栏输入本地工程 /logout/cas  -->      
     <beans:bean id="requestSingleLogoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">  
-        <beans:constructor-arg value="http://192.168.200.128:9100/cas/logout?service=http://localhost:8080"/>  
+        <beans:constructor-arg value="http://192.168.200.128:9100/cas/logout?service=http://localhost:8080"/>
         <beans:constructor-arg>  
             <beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>  
         </beans:constructor-arg>  
