@@ -13,4 +13,7 @@ public interface Constants {
 
     public final static String CART_LIST_COOKIE = "pyg_cartList";
     public final static String CART_LIST_REDIS = "pyg_cartList";
+
+    // 用户订单集合对象
+    public final static String ORDER_LIST_REDIS = "orderList";
 }
