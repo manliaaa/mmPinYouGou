@@ -1,9 +1,8 @@
-package cn.itcast.core.service.impl;
+package cn.itcast.core.service;
 
 import cn.itcast.core.dao.order.OrderDao;
 import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.order.Order;
-import cn.itcast.core.pojo.order.OrderQuery;
 import cn.itcast.core.service.OorderService;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;

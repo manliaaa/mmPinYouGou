@@ -11,7 +11,7 @@ app.service('orderService',function($http){
         return $http.post('../order/search.do?page='+page+"&rows="+rows, searchEntity);
     }
 
-    this.findById=function(orderId){
-        return $http.get("../order/findById.do?id="+orderId);
+    this.findById=function(Id){
+        return $http.get("../order/findById.do?Id="+Id);
     }
 });

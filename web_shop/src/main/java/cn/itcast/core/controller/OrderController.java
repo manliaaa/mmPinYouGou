@@ -40,7 +40,9 @@ public class OrderController {
     }
 
     @RequestMapping("/findById")
-    public Order findById(Long id){
-        return orderService.findById(id);
+    public Order findById(Long Id){
+        System.out.println(Id);
+        Order order = orderService.findById(Id);
+        return order;
     }
 }
