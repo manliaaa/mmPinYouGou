@@ -5,7 +5,6 @@ import cn.itcast.core.pojo.entity.Result;
 import cn.itcast.core.pojo.good.Brand;
 import cn.itcast.core.pojo.log.PayLog;
 import cn.itcast.core.service.BrandService;
-import cn.itcast.core.service.PayLogService;
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,8 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/brand")
 public class BrandController {
-    @Reference
-    private PayLogService payLogService;
+
     @Reference
     private BrandService brandService;
     @Value("${FILE_SERVER_URL}")
@@ -115,11 +113,7 @@ public class BrandController {
             return new Result(true,"导入失败!");
         }
     }
-        @RequestMapping("/findtu")
-    public List<PayLog> findtu(){
-        List<PayLog> payLogList = payLogService.findtu();
-        return payLogList;
-        }
+
 
 
 }
