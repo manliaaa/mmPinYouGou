@@ -3,7 +3,6 @@ package cn.itcast.core.controller;
 import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.entity.Result;
 import cn.itcast.core.pojo.good.Brand;
-import cn.itcast.core.pojo.log.PayLog;
 import cn.itcast.core.service.BrandService;
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +22,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/brand")
 public class BrandController {
-
     @Reference
     private BrandService brandService;
     @Value("${FILE_SERVER_URL}")

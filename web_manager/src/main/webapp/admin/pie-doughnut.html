@@ -1,68 +1,80 @@
 <!DOCTYPE html>
 <html style="height: 100%">
-   <head>
-       <meta charset="utf-8">
-   </head>
-   <body style="height: 100%; margin: 0">
-       <div id="container" style="height: 100%"></div>
-       <script type="text/javascript" src="../js/controller/echarts.simple.min.js"></script>
-       <script type="text/javascript" src="../js/controller/echarts.common.min.js"></script>
-       <script type="text/javascript" src="../js/controller/echarts.min.js"></script>
-       <script type="text/javascript">
-var dom = document.getElementById("container");
-var myChart = echarts.init(dom);
-var app = {};
-option = null;
-app.title = '环形图';
-
-option = {
-    tooltip: {
-        trigger: 'item',
-        formatter: "{a} <br/>{b}: {c} ({d}%)"
-    },
-    legend: {
-        orient: 'vertical',
-        x: 'left',
-        data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-    },
-    series: [
-        {
-            name:'访问来源',
-            type:'pie',
-            radius: ['50%', '70%'],
-            avoidLabelOverlap: false,
-            label: {
-                normal: {
-                    show: false,
-                    position: 'center'
+<head>
+    <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+<div id="container" style="height: 100%"></div>
+<script type="text/javascript" src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="../js/controller/echarts.simple.min.js"></script>
+<script type="text/javascript" src="../js/controller/echarts.common.min.js"></script>
+<script type="text/javascript" src="../js/controller/echarts.min.js"></script>
+<script type="text/javascript">
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    option = null;
+    app.title = '环形图';
+    jQuery.ajax({
+        url: "../order/findAll.do",  //访问后台的路径
+        type: 'get',
+        dataType: 'json',
+        success: function (jsons) {
+            option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
                 },
-                emphasis: {
-                    show: true,
-                    textStyle: {
-                        fontSize: '30',
-                        fontWeight: 'bold'
+                legend: {
+                    orient: 'vertical',
+                    x: 'left',
+                    data: jsons.Create_time.split(",")
+                },
+                series: [
+                    {
+                        name: '营业额',
+                        type: 'pie',
+                        radius: ['50%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            normal: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: false
+                            }
+                        },
+                        data: [
+                            {value: jsons.Payment.split(",")[0], name: jsons.Create_time.split(",")[0]},
+                            {value: jsons.Payment.split(",")[1], name: jsons.Create_time.split(",")[1]},
+                            {value: jsons.Payment.split(",")[2], name: jsons.Create_time.split(",")[2]},
+                            {value: jsons.Payment.split(",")[3], name: jsons.Create_time.split(",")[3]},
+                            {value: jsons.Payment.split(",")[4], name: jsons.Create_time.split(",")[4]},
+                            {value: jsons.Payment.split(",")[5], name: jsons.Create_time.split(",")[5]},
+                            {value: jsons.Payment.split(",")[6], name: jsons.Create_time.split(",")[6]},
+                            {value: jsons.Payment.split(",")[7], name: jsons.Create_time.split(",")[7]},
+                            {value: jsons.Payment.split(",")[8], name: jsons.Create_time.split(",")[8]},
+                            {value: jsons.Payment.split(",")[9], name: jsons.Create_time.split(",")[9]}
+                        ]
                     }
-                }
-            },
-            labelLine: {
-                normal: {
-                    show: false
-                }
-            },
-            data:[
-                {value:335, name:'直接访问'},
-                {value:310, name:'邮件营销'},
-                {value:234, name:'联盟广告'},
-                {value:135, name:'视频广告'},
-                {value:1548, name:'搜索引擎'}
-            ]
+                ]
+            };
+            ;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
         }
-    ]
-};
-;
-if (option && typeof option === "object") {
-    myChart.setOption(option, true);
-}
-       </script>
-   </body>
+    });
+</script>
+</body>
 </html>

@@ -4,17 +4,22 @@ import cn.itcast.core.dao.log.PayLogDao;
 import cn.itcast.core.dao.order.OrderDao;
 import cn.itcast.core.dao.order.OrderItemDao;
 import cn.itcast.core.pojo.entity.BuyerCart;
+import cn.itcast.core.pojo.entity.Orders;
 import cn.itcast.core.pojo.log.PayLog;
 import cn.itcast.core.pojo.order.Order;
 import cn.itcast.core.pojo.order.OrderItem;
 import cn.itcast.core.util.Constants;
 import cn.itcast.core.util.IdWorker;
 import com.alibaba.dubbo.config.annotation.Service;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.opensaml.xml.signature.P;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,6 +43,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private IdWorker idWorker;
+
 
 
     @Override
@@ -147,5 +153,11 @@ public class OrderServiceImpl implements OrderService {
             //4. 删除redis中的支付日志数据
             redisTemplate.boundHashOps("payLog").delete(userName);
         }
+    }
+//折线图后台查询
+    @Override
+    public List<Orders> findAll() {
+        //获取SqlSession对象
+        return orderDao.findAll();
     }
 }
