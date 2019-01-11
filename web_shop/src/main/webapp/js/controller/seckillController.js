@@ -31,4 +31,29 @@ app.controller('seckillController' ,function($scope,$controller,$location,typeTe
             $scope.entity = response;
         });
     }
+
+    // 保存品牌的方法:
+    $scope.save = function(){
+        // 区分是保存还是修改
+        var object;
+        if($scope.entity.id != null){
+            // 更新
+            object = seckillService.update($scope.entity);
+        }else{
+            // 保存
+            object = seckillService.save($scope.entity);
+        }
+        object.success(function(response){
+            // {success:true,message:xxx}
+            // 判断保存是否成功:
+            if(response.success==true){
+                // 保存成功
+                alert(response.message);
+                $scope.reloadList();
+            }else{
+                // 保存失败
+                alert(response.message);
+            }
+        });
+    }
 });

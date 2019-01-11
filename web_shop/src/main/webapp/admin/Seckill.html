@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<html>
-
 <head>
     <!-- 页面meta -->
     <meta charset="utf-8">
@@ -47,11 +45,12 @@
         <div class="pull-left">
             <div class="form-group form-inline">
                 <div class="btn-group">
-                    <a href="goods_edit.html"  class="btn btn-default">新建</a>
+                    <a href="#"  class="btn btn-default">新建</a>
                     <button type="button" class="btn btn-default" title="删除" ng-click="dele()" ><i class="fa fa-trash-o"></i> 删除</button>
                     <button type="button" class="btn btn-default" title="提交审核" ><i class="fa fa-check"></i> 提交审核</button>
                     <button type="button" class="btn btn-default" title="屏蔽" onclick='confirm("你确认要屏蔽吗？")'><i class="fa fa-ban"></i> 屏蔽</button>
                     <button type="button" class="btn btn-default" title="刷新" onclick="window.location.reload();"><i class="fa fa-refresh"></i> 刷新</button>
+                    <button type="button" class="btn btn-default" title="新建" data-toggle="modal" data-target="#seckillAdd" ng-click="entity={}"><i class="fa fa-file-o"></i> 秒杀商品添加</button>
                 </div>
             </div>
         </div>
@@ -139,6 +138,55 @@
                 </table>
             </div>
             <div class="modal-footer">
+                <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑窗口 -->
+<div class="modal fade" id="seckillAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="MyseckillAdd">秒杀商品添加</h3>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered table-striped"  width="800px">
+                    <tr>
+                        <td>商品名称</td>
+                        <td><input ng-model="entity.title" class="form-control" placeholder="商品名称" >  </td>
+                    </tr>
+                    <tr>
+                        <td>原价</td>
+                        <td><input ng-model="entity.price" class="form-control" placeholder="原价">  </td>
+                    </tr>
+                    <tr>
+                        <td>现价</td>
+                        <td><input ng-model="entity.costprice" class="form-control" placeholder="现价">  </td>
+                    </tr>
+                    <tr>
+                        <td>开始时间</td>
+                        <td><input ng-model="entity.startTime" class="form-control" type="datetime-local"/>  </td>
+                    </tr>
+                    <tr>
+                        <td>结束时间</td>
+                        <td><input ng-model="entity.endTime" class="form-control" type="datetime-local" >  </td>
+                    </tr>
+                    <tr>
+                        <td>秒杀商品数</td>
+                        <td><input ng-model="entity.num" class="form-control" placeholder="秒杀商品数">  </td>
+                    </tr>
+                    <tr>
+                        <td>秒杀商品描述</td>
+                        <td><input ng-model="entity.introduction" class="form-control" placeholder="秒杀商品描述">  </td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" ng-click="save()">保存</button>
                 <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">关闭</button>
             </div>
         </div>

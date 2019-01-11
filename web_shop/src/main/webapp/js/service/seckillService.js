@@ -14,4 +14,12 @@ app.service('seckillService',function($http){
     this.findById=function(id){
         return $http.get("../seckill/findById.do?id="+id);
     }
+
+    this.save = function(entity){
+        return $http.post("../seckill/save.do",entity);
+    }
+
+    this.update=function(entity){
+        return $http.post("../seckill/update.do",entity);
+    }
 });
