@@ -1,9 +1,12 @@
 package cn.itcast.core.dao.order;
 
+import cn.itcast.core.pojo.entity.Orders;
 import cn.itcast.core.pojo.order.Order;
 import cn.itcast.core.pojo.order.OrderQuery;
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
+
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 
 public interface OrderDao {
     int countByExample(OrderQuery example);
@@ -27,4 +30,11 @@ public interface OrderDao {
     int updateByPrimaryKeySelective(Order record);
 
     int updateByPrimaryKey(Order record);
+    @Select("SELECT\n" +
+            "\tSUM(payment) AS payment,\n" +
+            "\tDATE_FORMAT(create_time,'%Y-%m-%d') AS create_time\n" +
+            "FROM\n" +
+            "\ttb_order\n" +
+            "GROUP BY DATE_FORMAT(create_time,'%Y-%m-%d')\n")
+    List<Orders> findAll();
 }
