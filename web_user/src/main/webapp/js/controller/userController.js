@@ -1,5 +1,5 @@
  //控制层 
-app.controller('userController' ,function($scope,$controller   ,userService){	
+app.controller('userController' ,function($scope,$controller,userService){
 	
 	//注册用户
 	$scope.reg=function(){
@@ -26,11 +26,20 @@ app.controller('userController' ,function($scope,$controller   ,userService){
 			return ;
 		}
 		
-		userService.sendCode($scope.entity.phone  ).success(
+		userService.sendCode($scope.entity.phone).success(
 			function(response){
 				alert(response.message);
 			}
 		);		
 	}
-	
+
+
+    //数据回显
+    $scope.userMessage=function(entity){
+        userService.userMessage($scope.entity).success(
+            function(response){
+                $scope.entity= response;
+            }
+        );
+    }
 });	
