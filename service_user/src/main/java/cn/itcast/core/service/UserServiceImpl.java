@@ -1,9 +1,12 @@
 package cn.itcast.core.service;
 
+import cn.itcast.core.dao.address.AddressDao;
 import cn.itcast.core.dao.item.ItemDao;
 import cn.itcast.core.dao.order.OrderDao;
 import cn.itcast.core.dao.order.OrderItemDao;
 import cn.itcast.core.dao.user.UserDao;
+import cn.itcast.core.pojo.address.Address;
+import cn.itcast.core.pojo.address.AddressQuery;
 import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.item.Item;
 import cn.itcast.core.pojo.item.ItemQuery;
@@ -69,6 +72,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ItemDao itemDao;
 
+    @Autowired
+    private AddressDao addressDao;
+
+
+    // 地址管理
+    @Override
+    public List<Address> addresses(Address address) {
+        AddressQuery addressQuery = new AddressQuery();
+        AddressQuery.Criteria criteria = addressQuery.createCriteria();
+        criteria.andUserIdEqualTo(address.getUserId());
+        List<Address> addressList = addressDao.selectByExample(addressQuery);
+        return addressList;
+    }
+
+
 
 
     // 查询未付款订单并分页
@@ -111,6 +129,7 @@ public class UserServiceImpl implements UserService {
         }
         return new PageResult(orders.getTotal(),orders.getResult());
     }
+
 
 
     // 订单查询

@@ -1,5 +1,6 @@
 package cn.itcast.core.controller;
 
+import cn.itcast.core.pojo.address.Address;
 import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.order.Order;
 import cn.itcast.core.service.UserService;
@@ -30,6 +31,16 @@ public class UserOrderController {
         return result;
     }
 
+
+    // 地址管理
+    @RequestMapping("/addresses")
+    public List<Address> addresses(@RequestBody Order order){
+        Address address = new Address();
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        address.setUserId(userId);
+        List<Address> addresses = userService.addresses(address);
+        return addresses;
+    }
 }
 
 
