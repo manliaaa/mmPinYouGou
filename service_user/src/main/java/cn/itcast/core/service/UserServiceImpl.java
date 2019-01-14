@@ -15,15 +15,11 @@ import cn.itcast.core.pojo.order.OrderItem;
 import cn.itcast.core.pojo.order.OrderItemQuery;
 import cn.itcast.core.pojo.order.OrderQuery;
 import cn.itcast.core.pojo.user.User;
-import cn.itcast.core.pojo.user.UserQuery;
-import cn.itcast.core.util.Constants;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.activemq.command.ActiveMQQueue;
-import org.aspectj.weaver.ast.Or;
-import org.opensaml.xml.signature.Q;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,7 +30,6 @@ import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.Session;
-import javax.management.Query;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -244,7 +239,6 @@ public class UserServiceImpl implements UserService {
         }
 
         final String smsCode = sb.toString();
-        System.out.println(smsCode);
 
         //2. 手机号作为key, 验证码最为value存入redis中, 有效时间为10分钟
         redisTemplate.boundValueOps(phone).set(sb.toString(), 60*10, TimeUnit.SECONDS);
@@ -288,7 +282,6 @@ public class UserServiceImpl implements UserService {
     public void add(User user) {
         userDao.insertSelective(user);
     }
-
 
 
     public static void main(String[] args) {

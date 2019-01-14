@@ -20,10 +20,11 @@
     <script type="text/javascript" src="./js/base.js"></script>
     <script type="text/javascript" src="./js/service/contentService.js"></script>
     <script type="text/javascript" src="./js/controller/contentController.js"></script>
-   
+
+
 </head>
 
-<body ng-app="pinyougou" ng-controller="contentController" ng-init="findByCategoryId(1)">
+<body ng-app="pinyougou" ng-controller="contentController" ng-init="findByCategoryId(1);findHome(5);findItemCatList()">
 	<!-- 头部栏位 -->
 	<!--页面顶部-->
 <div id="nav-bottom">
@@ -136,9 +137,44 @@
 
 	<!--列表-->
 	<div class="sort">
-		<div class="py-container">
+		<div class="py-containeer">
 			<div class="yui3-g SortList ">
 				<div class="yui3-u Left all-sort-list">
+					<div class="all-sort-list2">
+						<div class="item {{flag?'hover':''}}" ng-repeat="itemCat1 in itemCatList" ng-mouseenter="flag=true"
+							 ng-mouseleave="flag=false">
+							<h3><a href="">{{itemCat1.name}}</a></h3>
+							<!--通过三元表达式确定是显示还是隐藏-->
+							<div class="item-list clearfix" style="display: {{!flag?'none':'block'}};">
+								<div class="subitem">
+									<!--遍历2级分类-->
+									<dl class="fore1" ng-repeat="itemCat2 in itemCat1.itemCatList">
+										<dt>
+											<a href="">{{itemCat2.name}}</a>
+										</dt>
+										<dd>
+											<!--遍历3级分类-->
+											<em ng-repeat="itemCat3 in itemCat2.itemCatList">
+												<a href="">{{itemCat3.name}}</a>
+											</em>
+										</dd>
+									</dl>
+								</div>
+							</div>
+						</div>
+						<!--商品分类 结束-->
+					</div>
+				</div>
+
+
+
+
+
+
+
+
+
+	<!--			<div class="yui3-u Left all-sort-list">
 					<div class="all-sort-list2">
 						<div class="item bo">
 							<h3><a href="">图书、音像、数字商品</a></h3>
@@ -526,7 +562,11 @@
 						</div>
 					</div>
 				</div>
-				
+				-->
+
+
+
+
 				<div class="yui3-u Center banerArea">
 					<!--banner轮播-->
 					<div id="myCarousel" data-ride="carousel" data-interval="4000" class="sui-carousel slide">
@@ -897,12 +937,13 @@
 						<div class="yui3-u row-330 floorBanner">
 							<div id="floorCarousel" data-ride="carousel" data-interval="4000" class="sui-carousel slide">
 								<ol class="carousel-indicators">
-									<li data-target="#floorCarousel" data-slide-to="0" class="active"></li>
+									<!--<li data-target="#floorCarousel" data-slide-to="0" class="active"></li>
 									<li data-target="#floorCarousel" data-slide-to="1"></li>
-									<li data-target="#floorCarousel" data-slide-to="2"></li>
+									<li data-target="#floorCarousel" data-slide-to="2"></li>-->
+									<li data-target="#floorCarousel" data-slide-to="{{$index}}" class="{{$index==0?'active':''}}" ng-repeat="item in conList[5]"></li>
 								</ol>
 								<div class="carousel-inner">
-									<div class="active item">
+									<!--<div class="active item">
 										<img src="img/floor-1-b01.png">
 									</div>
 									<div class="item">
@@ -910,6 +951,11 @@
 									</div>
 									<div class="item">
 										<img src="img/floor-1-b03.png">
+									</div>-->
+									<div class="{{$index==0?'active':''}} item" ng-repeat="item in conList[5]">
+										<a href="{{item.url}}">
+											<img src="{{item.pic}}"  width="400" height="240"/>
+										</a>
 									</div>
 								</div>
 								<a href="#floorCarousel" data-slide="prev" class="carousel-control left">‹</a>
@@ -1007,12 +1053,13 @@
 						<div class="yui3-u row-330 floorBanner">
 							<div id="floorCarousell" data-ride="carousel" data-interval="4000" class="sui-carousel slide">
 								<ol class="carousel-indicators">
-									<li data-target="#floorCarousell" data-slide-to="0" class="active"></li>
+									<!--<li data-target="#floorCarousell" data-slide-to="0" class="active"></li>
 									<li data-target="#floorCarousell" data-slide-to="1"></li>
-									<li data-target="#floorCarousell" data-slide-to="2"></li>
+									<li data-target="#floorCarousell" data-slide-to="2"></li>-->
+									<li data-target="#floorCarousel" data-slide-to="{{$index}}" class="{{$index==0?'active':''}}" ng-repeat="item in conList[5]"></li>
 								</ol>
 								<div class="carousel-inner">
-									<div class="active item">
+									<!--<div class="active item">
 										<img src="img/floor-1-b01.png">
 									</div>
 									<div class="item">
@@ -1020,6 +1067,11 @@
 									</div>
 									<div class="item">
 										<img src="img/floor-1-b03.png">
+									</div>-->
+									<div class="{{$index==0?'active':''}} item" ng-repeat="item in conList[5]">
+										<a href="{{item.url}}">
+											<img src="{{item.pic}}"  width="400" height="240"/>
+										</a>
 									</div>
 								</div>
 								<a href="#floorCarousell" data-slide="prev" class="carousel-control left">‹</a>

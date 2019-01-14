@@ -2,12 +2,8 @@ package cn.itcast.core.service;
 
 import cn.itcast.core.dao.item.ItemCatDao;
 import cn.itcast.core.pojo.entity.PageResult;
-import cn.itcast.core.pojo.good.Brand;
-import cn.itcast.core.pojo.good.BrandQuery;
 import cn.itcast.core.pojo.item.ItemCat;
 import cn.itcast.core.pojo.item.ItemCatQuery;
-import cn.itcast.core.pojo.specification.Specification;
-import cn.itcast.core.pojo.template.TypeTemplate;
 import cn.itcast.core.util.Constants;
 import cn.itcast.core.util.ImportExcelUtil;
 import com.alibaba.dubbo.config.annotation.Service;

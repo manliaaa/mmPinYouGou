@@ -1,9 +1,13 @@
 package cn.itcast.core.service;
 
 import cn.itcast.core.dao.ad.ContentDao;
+import cn.itcast.core.dao.item.ItemCatDao;
 import cn.itcast.core.pojo.ad.Content;
 import cn.itcast.core.pojo.ad.ContentQuery;
+import cn.itcast.core.pojo.entity.CatEntity;
 import cn.itcast.core.pojo.entity.PageResult;
+import cn.itcast.core.pojo.item.ItemCat;
+import cn.itcast.core.pojo.item.ItemCatQuery;
 import cn.itcast.core.util.Constants;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
@@ -12,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,6 +31,9 @@ public class ContentServiceImpl implements ContentService {
 
     @Autowired
     private ContentDao contentDao;
+
+    @Autowired
+    private ItemCatDao catDao;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -119,4 +128,68 @@ public class ContentServiceImpl implements ContentService {
     }
 
 
+    @Override
+    public List<Content> findHome(Long categoryId) {
+        //1.先获取数据
+        List<Content> conList = (List<Content>) redisTemplate.boundHashOps(Constants.CONTENT_LIST_REDIS).get(categoryId);
+        //2.然后考虑数据为空，该去数据库查询
+        if (conList == null) {
+            //3.然后去数据库查询
+            conList = findByCategoryId(categoryId);
+            //4.在Redis中也缓存试试
+            redisTemplate.boundHashOps(Constants.CONTENT_LIST_REDIS).put(categoryId, conList);
+        }
+        return conList;
+    }
+
+    @Override
+    public void selectItemCat1List(CatEntity catEntity) {
+        ItemCatQuery itemCatQuery = new ItemCatQuery();
+        ItemCatQuery.Criteria criteria = itemCatQuery.createCriteria();
+        criteria.andNameEqualTo(catEntity.getItemCat().getName());
+        System.out.println(itemCatQuery);
+        catDao.selectByExample(itemCatQuery);
+    }
+
+    @Override
+    public List<ItemCat> findByParent() {
+        //从缓存中查询首页商品分类
+        List<ItemCat> itemCatList = (List<ItemCat>) redisTemplate.boundHashOps("itemCatList").get("indexItemCat");
+
+        //如果缓存中没有数据，则从数据库查询再存入缓存
+        if(itemCatList==null){
+            //查询出1级商品分类的集合
+            ItemCatQuery query=new ItemCatQuery();
+            query.createCriteria().andParentIdEqualTo(0L);
+
+            itemCatList = catDao.selectByExample(query);
+
+            //遍历1级商品分类的集合
+            for(ItemCat itemCat1:itemCatList){
+                //查询2级商品分类的集合，将1级商品分类的id作为条件
+                ItemCatQuery query1=new ItemCatQuery();
+                query1.createCriteria().andParentIdEqualTo(itemCat1.getId());
+                List<ItemCat> itemCatList2=catDao.selectByExample(query1);
+
+                //遍历2级商品分类的集合
+                for(ItemCat itemCat2:itemCatList2){
+                    //查询3级商品分类的集合(将2级商品分类的父id作为条件)
+                    ItemCatQuery query2=new ItemCatQuery();
+                    query2.createCriteria().andParentIdEqualTo(itemCat2.getId());
+                    List<ItemCat> itemCatList3 = catDao.selectByExample(query2);
+                    //将2级商品分类的集合封装到2级商品分类实体中
+                    itemCat2.setItemCatList(itemCatList3);
+                }
+                //3级商品分类已经封装到2级分类中
+                //将2级商品分类的集合封装到1级商品分类实体中
+                itemCat1.setItemCatList(itemCatList2);
+            }
+            //存入缓存
+            redisTemplate.boundHashOps("itemCatList").put("indexItemCat",itemCatList);
+
+            return itemCatList;
+        }
+        //到这一步，说明缓存中有数据，直接返回
+        return itemCatList;
+    }
 }

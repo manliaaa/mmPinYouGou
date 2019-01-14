@@ -20,6 +20,11 @@ public class UserController {
 
 
     /**
+     * 保存用户信息  基本资料
+     * @param user  用户昵称
+     * @return
+     */
+    /**
      * 发送验证码
      * @param phone 手机号
      * @return

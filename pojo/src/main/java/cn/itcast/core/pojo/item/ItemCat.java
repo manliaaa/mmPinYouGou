@@ -1,6 +1,7 @@
 package cn.itcast.core.pojo.item;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class ItemCat implements Serializable {
     /**
@@ -18,14 +19,38 @@ public class ItemCat implements Serializable {
      */
     private String name;
 
+    public String getAuditStatus() {
+        return auditStatus;
+    }
+
+    public void setAuditStatus(String auditStatus) {
+        this.auditStatus = auditStatus;
+    }
+
+    private String auditStatus;
+
     /**
      * 类型id
      */
     private Long typeId;
 
-    private String auditStatus;
+
+
+    private List<ItemCat> itemCatList;
+
 
     private static final long serialVersionUID = 1L;
+
+
+
+
+    public List<ItemCat> getItemCatList() {
+        return itemCatList;
+    }
+
+    public void setItemCatList(List<ItemCat> itemCatList) {
+        this.itemCatList = itemCatList;
+    }
 
     public Long getId() {
         return id;
@@ -59,14 +84,6 @@ public class ItemCat implements Serializable {
         this.typeId = typeId;
     }
 
-    public String getAuditStatus() {
-        return auditStatus;
-    }
-
-    public void setAuditStatus(String auditStatus) {
-        this.auditStatus = auditStatus == null ? null : auditStatus.trim();
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -77,7 +94,6 @@ public class ItemCat implements Serializable {
         sb.append(", parentId=").append(parentId);
         sb.append(", name=").append(name);
         sb.append(", typeId=").append(typeId);
-        sb.append(", auditStatus=").append(auditStatus);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
@@ -96,10 +112,9 @@ public class ItemCat implements Serializable {
         }
         ItemCat other = (ItemCat) that;
         return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-                && (this.getParentId() == null ? other.getParentId() == null : this.getParentId().equals(other.getParentId()))
-                && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
-                && (this.getTypeId() == null ? other.getTypeId() == null : this.getTypeId().equals(other.getTypeId()))
-                && (this.getAuditStatus() == null ? other.getAuditStatus() == null : this.getAuditStatus().equals(other.getAuditStatus()));
+            && (this.getParentId() == null ? other.getParentId() == null : this.getParentId().equals(other.getParentId()))
+            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()))
+            && (this.getTypeId() == null ? other.getTypeId() == null : this.getTypeId().equals(other.getTypeId()));
     }
 
     @Override
@@ -110,7 +125,6 @@ public class ItemCat implements Serializable {
         result = prime * result + ((getParentId() == null) ? 0 : getParentId().hashCode());
         result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         result = prime * result + ((getTypeId() == null) ? 0 : getTypeId().hashCode());
-        result = prime * result + ((getAuditStatus() == null) ? 0 : getAuditStatus().hashCode());
         return result;
     }
 }

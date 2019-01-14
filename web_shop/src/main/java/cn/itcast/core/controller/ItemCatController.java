@@ -30,6 +30,7 @@ public class ItemCatController {
     @RequestMapping("/findByParentId")
     public List<ItemCat> findByParentId(Long parentId) {
         List<ItemCat> list = catService.findByParentId(parentId);
+        //System.out.println("yi"+list);
         return list;
     }
 
