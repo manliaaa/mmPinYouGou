@@ -2,8 +2,8 @@ package cn.itcast.core.controller;
 
 import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.entity.Result;
-import cn.itcast.core.pojo.template.TypeTemplate;
-import cn.itcast.core.service.TemplateService;
+import cn.itcast.core.pojo.good.Brand;
+import cn.itcast.core.service.BrandService;
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,67 +13,104 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/typeTemplate")
-public class TemplateController {
+@RequestMapping("/brand")
+public class BrandController {
 
     @Reference
-    private TemplateService templateService;
+    private BrandService brandService;
 
-    @RequestMapping("/findOne")
-    public TypeTemplate findOne(Long id) {
-        TypeTemplate one = templateService.findOne(id);
-        return one;
-    }
-
-
-
-    @RequestMapping("/search")
-    public PageResult search(@RequestBody TypeTemplate template, Integer page, Integer rows) {
-        PageResult result = templateService.findPage(template, page, rows);
-        return result;
-    }
-
-    @RequestMapping("/add")
-    public Result add(@RequestBody TypeTemplate template) {
-        try {
-            templateService.add(template);
-            return new Result(true, "保存成功!");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result(false, "保存失败!");
-        }
-    }
-    /**
-     * 根据模板id, 获取规格和对应的规格选项集合数据
-     * @param id
-     * @return
-     */
-    @RequestMapping("/findBySpecList")
-    public List<Map> findBySpecList(Long id) {
-        List<Map> list = templateService.findBySpecList(id);
+    @RequestMapping("/findAll")
+    public List<Brand> findAll() {
+        List<Brand> list = brandService.findAll();
         return list;
     }
 
-    @RequestMapping("/update")
-    public  Result update(@RequestBody TypeTemplate template) {
+    /**
+     * 品牌分页查询
+     * @param page  当前页
+     * @param rows  每页查询多少条数据
+     * @return
+     */
+    @RequestMapping("/findPage")
+    public PageResult findPage(Integer page, Integer rows) {
+        PageResult result = brandService.findPage(null, page, rows);
+        return result;
+    }
+
+    /**
+     * 添加品牌数据
+     * @param brand
+     * @return
+     */
+    @RequestMapping("/add")
+    public Result add(@RequestBody  Brand brand) {
         try {
-            templateService.update(template);
-            return new Result(true, "保存成功!");
+            brandService.add(brand);
+            return new Result(true, "添加成功!");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "保存失败!");
+            return new Result(false, "添加失败!");
         }
     }
 
+    /**
+     * 根据id查询品牌对象
+     * @param id
+     * @return
+     */
+    @RequestMapping("/findOne")
+    public Brand findOne(Long id) {
+        Brand one = brandService.findOne(id);
+        return one;
+    }
+
+    /**
+     * 保存修改
+     * @param brand
+     * @return
+     */
+    @RequestMapping("/update")
+    public Result update(@RequestBody Brand brand) {
+        try {
+            brandService.update(brand);
+            return new Result(true, "修改成功!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "修改失败!");
+        }
+    }
+
+    /**
+     * 删除选中的数据
+     * @param ids
+     * @return
+     */
     @RequestMapping("/delete")
     public Result delete(Long[] ids) {
         try {
-            templateService.delete(ids);
+            brandService.delete(ids);
             return new Result(true, "删除成功!");
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, "删除失败!");
         }
+    }
+
+    @RequestMapping("/search")
+    public PageResult search(@RequestBody Brand brand, Integer page, Integer rows) {
+        PageResult result = brandService.findPage(brand, page, rows);
+        return result;
+    }
+
+    /**
+     * 获取模板下拉选择框所需要的数据
+     * [{id:1,text:xxx},{id:2, text: asdfasdfsa}]
+     * @return
+     */
+    @RequestMapping("/selectOptionList")
+    public List<Map> selectOptionList(){
+        List<Map> list = brandService.selectOptionList();
+        return list;
     }
 
     @RequestMapping("/updateStatus")
@@ -82,7 +119,7 @@ public class TemplateController {
             if (ids != null) {
                 for (Long id : ids) {
                     //1. 更改数7银行业调查++据库中商品的审核状态
-                    templateService.updateStatus(id, status);
+                    brandService.updateStatus(id, status);
 
                     //2. 判断商品审核状态是否为1, 审核通过
 //                    if ("1".equals(status)) {
@@ -100,5 +137,4 @@ public class TemplateController {
             return new Result(false, "状态修改失败!");
         }
     }
-
 }

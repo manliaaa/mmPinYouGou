@@ -116,10 +116,26 @@ public class SpecServiceImpl implements SpecService {
 
     }
 
+
+
     @Override
     public List<Map> selectOptionList() {
         return specDao.selectOptionList();
     }
+
+
+    @Override
+    public void updateStatus(final Long id, String status) {
+        /**
+         * 根据商品id改变数据库中商品的上架状态
+         */
+        //1. 修改商品状态
+        Specification specification = new Specification();
+        specification.setId(id);
+        specification.setAuditStatus(status);
+        specDao.updateByPrimaryKeySelective(specification);
+    }
+
     //excel导入
     @Override
     public void getBankListByExcel(String path) {

@@ -20,5 +20,8 @@ public interface TemplateService {
 
     public List<Map> findBySpecList(Long id);
 
+    public void  updateStatus(Long id, String  status);
+
+
     void getBankListByExcel(String originalFilename);
 }

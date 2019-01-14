@@ -2,8 +2,9 @@ package cn.itcast.core.controller;
 
 import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.entity.Result;
-import cn.itcast.core.pojo.template.TypeTemplate;
-import cn.itcast.core.service.TemplateService;
+import cn.itcast.core.pojo.entity.SpecEntity;
+import cn.itcast.core.pojo.specification.Specification;
+import cn.itcast.core.service.SpecService;
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,68 +13,93 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 规格管理
+ */
 @RestController
-@RequestMapping("/typeTemplate")
-public class TemplateController {
+@RequestMapping("/specification")
+public class SpecController {
 
     @Reference
-    private TemplateService templateService;
+    private SpecService specService;
 
-    @RequestMapping("/findOne")
-    public TypeTemplate findOne(Long id) {
-        TypeTemplate one = templateService.findOne(id);
-        return one;
-    }
-
-
-
+    /**
+     * 规格高级查询
+     * @param spec
+     * @param page
+     * @param rows
+     * @return
+     */
     @RequestMapping("/search")
-    public PageResult search(@RequestBody TypeTemplate template, Integer page, Integer rows) {
-        PageResult result = templateService.findPage(template, page, rows);
+    public PageResult search(@RequestBody Specification spec, Integer page, Integer rows) {
+        PageResult result = specService.findPage(spec, page, rows);
         return result;
+
     }
 
+    /**
+     * 添加保存规格
+     * @param spec
+     * @return
+     */
     @RequestMapping("/add")
-    public Result add(@RequestBody TypeTemplate template) {
+    public Result add(@RequestBody SpecEntity spec){
         try {
-            templateService.add(template);
+            specService.add(spec);
             return new Result(true, "保存成功!");
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, "保存失败!");
         }
     }
+
     /**
-     * 根据模板id, 获取规格和对应的规格选项集合数据
+     * 规格回显
      * @param id
      * @return
      */
-    @RequestMapping("/findBySpecList")
-    public List<Map> findBySpecList(Long id) {
-        List<Map> list = templateService.findBySpecList(id);
-        return list;
+    @RequestMapping("/findOne")
+    public SpecEntity findOne(Long id) {
+        SpecEntity one = specService.findOne(id);
+        return one;
     }
 
+    /**
+     * 规格保存修改
+     * @param specEntity
+     * @return
+     */
     @RequestMapping("/update")
-    public  Result update(@RequestBody TypeTemplate template) {
+    public Result update(@RequestBody SpecEntity specEntity) {
         try {
-            templateService.update(template);
-            return new Result(true, "保存成功!");
+            specService.update(specEntity);
+            return new Result(true, "修改成功!");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "保存失败!");
+            return new Result(false, "修改失败!");
         }
     }
 
+    /**
+     * 批量删除
+     * @param ids
+     * @return
+     */
     @RequestMapping("/delete")
     public Result delete(Long[] ids) {
         try {
-            templateService.delete(ids);
+            specService.delete(ids);
             return new Result(true, "删除成功!");
         } catch (Exception e) {
             e.printStackTrace();
             return new Result(false, "删除失败!");
         }
+    }
+
+    @RequestMapping("/selectOptionList")
+    public List<Map> selectOptionList() {
+        List<Map> maps = specService.selectOptionList();
+        return maps;
     }
 
     @RequestMapping("/updateStatus")
@@ -82,7 +108,7 @@ public class TemplateController {
             if (ids != null) {
                 for (Long id : ids) {
                     //1. 更改数7银行业调查++据库中商品的审核状态
-                    templateService.updateStatus(id, status);
+                    specService.updateStatus(id, status);
 
                     //2. 判断商品审核状态是否为1, 审核通过
 //                    if ("1".equals(status)) {
@@ -100,5 +126,4 @@ public class TemplateController {
             return new Result(false, "状态修改失败!");
         }
     }
-
 }

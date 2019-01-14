@@ -1,12 +1,18 @@
 package cn.itcast.core.service;
 
 import cn.itcast.core.dao.item.ItemCatDao;
+import cn.itcast.core.pojo.entity.PageResult;
+import cn.itcast.core.pojo.good.Brand;
+import cn.itcast.core.pojo.good.BrandQuery;
 import cn.itcast.core.pojo.item.ItemCat;
 import cn.itcast.core.pojo.item.ItemCatQuery;
+import cn.itcast.core.pojo.specification.Specification;
 import cn.itcast.core.pojo.template.TypeTemplate;
 import cn.itcast.core.util.Constants;
 import cn.itcast.core.util.ImportExcelUtil;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +50,26 @@ public class ItemCatServiceImpl implements ItemCatService {
     }
 
     @Override
+    public PageResult findPage(ItemCat itemCat, Integer page, Integer rows) {
+        //使用分页助手, 传入当前页和每页查询多少条数据
+        PageHelper.startPage(page, rows);
+        //创建查询对象
+        ItemCatQuery itemCatQuery = new ItemCatQuery();
+        //创建where查询条件
+        ItemCatQuery.Criteria criteria = itemCatQuery.createCriteria();
+        if (itemCat != null) {
+            if (itemCat.getName() != null && !"".equals(itemCat.getName())){
+                criteria.andNameLike("%"+itemCat.getName()+"%");
+            }
+            if (itemCat.getAuditStatus() != null && !"".equals(itemCat.getAuditStatus())) {
+                criteria.andAuditStatusLike("%"+itemCat.getAuditStatus()+"%");
+            }
+        }
+        //使用分页助手的page对象接收查询到的数据, page对象继承了ArrayList所以可以接收查询到的结果集数据.
+        Page<ItemCat> itemCats = (Page<ItemCat>)catDao.selectByExample(itemCatQuery);
+        return new PageResult(itemCats.getTotal(), itemCats.getResult());
+    }
+    @Override
     public ItemCat findOne(Long id) {
         return catDao.selectByPrimaryKey(id);
     }
@@ -75,5 +101,17 @@ public class ItemCatServiceImpl implements ItemCatService {
             }
             catDao.insertSelective(itemCat);
         }
+    }
+
+    @Override
+    public void updateStatus(final Long id, String status) {
+        /**
+         * 根据商品id改变数据库中商品的上架状态
+         */
+        //1. 修改商品状态
+        ItemCat itemCat = new ItemCat();
+        itemCat.setId(id);
+        itemCat.setAuditStatus(status);
+        catDao.updateByPrimaryKeySelective(itemCat);
     }
 }

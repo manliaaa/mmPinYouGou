@@ -5,6 +5,7 @@ import cn.itcast.core.dao.order.OrderDao;
 import cn.itcast.core.dao.order.OrderItemDao;
 import cn.itcast.core.pojo.entity.BuyerCart;
 import cn.itcast.core.pojo.entity.Orders;
+import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.log.PayLog;
 import cn.itcast.core.pojo.order.Order;
 import cn.itcast.core.pojo.order.OrderItem;
@@ -45,6 +46,10 @@ public class OrderServiceImpl implements OrderService {
     private IdWorker idWorker;
 
 
+    @Override
+    public List<Order> findAll1() {
+        return null;
+    }
 
     @Override
     public void add(Order order) {
@@ -120,6 +125,26 @@ public class OrderServiceImpl implements OrderService {
             redisTemplate.boundHashOps(Constants.CART_LIST_REDIS).delete(order.getUserId());
 
         }
+    }
+
+    @Override
+    public Order findOne(Long id) {
+        return null;
+    }
+
+    @Override
+    public PageResult findPage(Order order, Integer page, Integer rows) {
+        return null;
+    }
+
+    @Override
+    public void update(Order order) {
+
+    }
+
+    @Override
+    public void delete(Long[] ids) {
+
     }
 
     @Override

@@ -22,5 +22,6 @@ public interface BrandService {
 
     List<Map> selectOptionList();
 
+    public void  updateStatus(Long id, String  status);
     void getBankListByExcel(String path);
 }

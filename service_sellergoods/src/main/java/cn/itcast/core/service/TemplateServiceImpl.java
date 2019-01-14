@@ -92,6 +92,20 @@ public class TemplateServiceImpl implements TemplateService {
         }
     }
 
+
+    @Override
+    public void updateStatus(final Long id, String status) {
+        /**
+         * 根据商品id改变数据库中商品的上架状态
+         */
+        //1. 修改商品状态
+        TypeTemplate typeTemplate = new TypeTemplate();
+        typeTemplate.setId(id);
+        typeTemplate.setAuditStatus(status);
+        templateDao.updateByPrimaryKeySelective(typeTemplate);
+    }
+
+
     @Override
     public List<Map> findBySpecList(Long id) {
         //1. 根据模板id查询对应的模板对象
