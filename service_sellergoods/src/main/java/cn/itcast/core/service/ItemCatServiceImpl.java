@@ -61,7 +61,7 @@ public class ItemCatServiceImpl implements ItemCatService {
                 criteria.andAuditStatusLike("%"+itemCat.getAuditStatus()+"%");
             }
         }
-        //使用分页助手的page对象接收查询到的数据, page对象继承了ArrayList所以可以接收查询到的结果集数据.
+        //使用111分页助手的page对象接收查询到的数据, page对象继承了ArrayList所以可以接收查询到的结果集数据.
         Page<ItemCat> itemCats = (Page<ItemCat>)catDao.selectByExample(itemCatQuery);
         return new PageResult(itemCats.getTotal(), itemCats.getResult());
     }
