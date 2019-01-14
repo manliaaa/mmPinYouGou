@@ -1,5 +1,6 @@
 package cn.itcast.core.service;
 
+import cn.itcast.core.pojo.address.Address;
 import cn.itcast.core.pojo.entity.PageResult;
 import cn.itcast.core.pojo.entity.Result;
 import cn.itcast.core.pojo.good.Brand;
@@ -26,4 +27,7 @@ public interface UserService {
 
     // 查询未付款订单并分页
     public PageResult searchStatus(Integer page,Integer rows,Order order);
+
+    //地址管理
+    public List<Address> addresses(Address address);
 }

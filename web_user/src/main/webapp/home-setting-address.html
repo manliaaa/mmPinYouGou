@@ -10,9 +10,24 @@
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-seckillOrder.css" />
+	<script type="text/javascript" src="plugins/angularjs/angular.min.js"></script>
+	<script type="text/javascript" src="js/base.js"></script>
+
+
+
+
+	<script type="text/javascript" src="js/controller/baseController.js"></script>
+	<script type="text/javascript" src="js/controller/ordersController.js"></script>
+	<script type="text/javascript" src="js/service/ordersService.js"></script>
+
+	<script type="text/javascript" src="plugins/bootstrap/css/bootstrap.css"></script>
+	<script type="text/javascript" src="plugins/bootstrap/css/bootstrap-datetimepicker.css"></script>
+	<script type="text/javascript" src="plugins/bootstrap/css/bootstrap-theme.css"></script>
+
+
 </head>
 
-<body>
+<body  class="hold-transition skin-red sidebar-mini" ng-app="pinyougou" ng-controller="ordersController" ng-init="addresses()">
     <!-- 头部栏位 -->
     <!--页面顶部-->
 <div id="nav-bottom">
@@ -142,10 +157,11 @@ $(function(){
 <script type="text/javascript" src="js/plugins/sui/sui.min.js"></script>
 <script type="text/javascript" src="js/plugins/jquery-placeholder/jquery.placeholder.min.js"></script>
 <script type="text/javascript" src="js/widget/nav.js"></script>
-<script type="text/javascript" src="pages/userInfo/distpicker.data.js"></script>
-<script type="text/javascript" src="pages/userInfo/distpicker.js"></script>
-<script type="text/javascript" src="pages/userInfo/main.js"></script>
+<script type="text/javascript" src="js/plugins/citypicker/distpicker.data.js"></script>
+<script type="text/javascript" src="js/plugins/citypicker/distpicker.js"></script>
+<script type="text/javascript" src="js/pages/main.js"></script>
 </body>
+
     <!--header-->
     <div id="account">
         <div class="py-container">
@@ -205,30 +221,21 @@ $(function(){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>刘田田</td>
-                                        <td>北京 北京市 海淀区 上地街道东北旺西路8号中关村软件园9号楼</td>
-                                        <td>1774***********4</td>
+                                    <tr ng-repeat="entity in list">
+                                        <td>{{entity.userId}}</td>
+                                        <td>{{entity.address}}</td>
+                                        <td>{{entity.mobile}}</td>
                                         <td>
                                             <a href="#">编辑</a>
                                             <a href="#">删除</a>
                                             默认地址
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>沈沉</td>
-                                        <td>北京 北京市 海淀区 上地街道东北旺西路8号中关村软件园9号楼</td>
-                                        <td>1774***********4</td>
-                                        <td>
-                                            <a href="#">编辑</a>
-                                            <a href="#">删除</a>
-                                            <a href="#">设为默认</a>
-                                        </td>
-                                    </tr>
                                     
                                 </tbody>
                             </table>                          
-                        </div>
+
+						</div>
                         <!--新增地址弹出层-->
                          <div  tabindex="-1" role="dialog" data-hasfoot="false" class="sui-modal hide fade edit" style="width:580px;">
                             <div class="modal-dialog">

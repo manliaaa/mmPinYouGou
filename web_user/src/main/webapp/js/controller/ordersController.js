@@ -1,5 +1,5 @@
 //控制层
-app.controller('ordersController' ,function($scope,$controller,ordersService) {
+app.controller('ordersController',function($scope,$controller,ordersService) {
     $controller('baseController', {$scope: $scope});//继承
 
     $scope.searchEntity={};
@@ -9,6 +9,16 @@ app.controller('ordersController' ,function($scope,$controller,ordersService) {
             function(response){
                 $scope.list=response.rows;
                 $scope.paginationConf.totalItems=response.total;//更新总记录数
+            }
+        );
+    }
+
+
+    // 地址管理
+    $scope.addresses=function(){
+        ordersService.addresses($scope.searchEntity).success(
+            function(response){
+                $scope.list=response;
             }
         );
     }
