@@ -4,6 +4,29 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 public class Goods implements Serializable {
+
+    public Goods() {
+    }
+
+    public Goods(Long id, String sellerId, String goodsName, Long defaultItemId, String auditStatus, String isMarketable, Long brandId, String caption, Long category1Id, Long category2Id, Long category3Id, String smallPic, BigDecimal price, Long typeTemplateId, String isEnableSpec, String isDelete) {
+        this.id = id;
+        this.sellerId = sellerId;
+        this.goodsName = goodsName;
+        this.defaultItemId = defaultItemId;
+        this.auditStatus = auditStatus;
+        this.isMarketable = isMarketable;
+        this.brandId = brandId;
+        this.caption = caption;
+        this.category1Id = category1Id;
+        this.category2Id = category2Id;
+        this.category3Id = category3Id;
+        this.smallPic = smallPic;
+        this.price = price;
+        this.typeTemplateId = typeTemplateId;
+        this.isEnableSpec = isEnableSpec;
+        this.isDelete = isDelete;
+    }
+
     /**
      * 主键
      */

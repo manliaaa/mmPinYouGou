@@ -8,6 +8,40 @@ import java.util.Date;
 import java.util.List;
 
 public class Order implements Serializable {
+    public Order() {
+    }
+
+    /**
+     * 创建order的满参构造
+     */
+    public Order(Long orderId, BigDecimal payment, String paymentType, String postFee, String status, Date createTime, Date updateTime, Date paymentTime, Date consignTime, Date endTime, Date closeTime, String shippingName, String shippingCode, String userId, String buyerMessage, String buyerNick, String buyerRate, String receiverAreaName, String receiverMobile, String receiverZipCode, String receiver, Date expire, String invoiceType, String sourceType, String sellerId) {
+        this.orderId = orderId;
+        this.payment = payment;
+        this.paymentType = paymentType;
+        this.postFee = postFee;
+        this.status = status;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.paymentTime = paymentTime;
+        this.consignTime = consignTime;
+        this.endTime = endTime;
+        this.closeTime = closeTime;
+        this.shippingName = shippingName;
+        this.shippingCode = shippingCode;
+        this.userId = userId;
+        this.buyerMessage = buyerMessage;
+        this.buyerNick = buyerNick;
+        this.buyerRate = buyerRate;
+        this.receiverAreaName = receiverAreaName;
+        this.receiverMobile = receiverMobile;
+        this.receiverZipCode = receiverZipCode;
+        this.receiver = receiver;
+        this.expire = expire;
+        this.invoiceType = invoiceType;
+        this.sourceType = sourceType;
+        this.sellerId = sellerId;
+    }
+
     /**
      * 订单id
      */

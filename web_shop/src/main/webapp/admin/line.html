@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>第三部分</title>
+</head>
+<body>
+
+<div id="main" style="height:600px;width: 1100px;margin-left: 30px;"></div>
+
+<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>
+<script type="text/javascript" src="../plugins/jQuery/jquery-2.2.3.min.js" ></script>
+<script type="text/javascript">
+    // 路径配置
+    require.config({
+        paths: {
+            echarts: 'http://echarts.baidu.com/build/dist'
+        }
+    });
+
+
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/line',//需要折线图则加载line模块
+                'echarts/chart/bar' // 使用柱状图就加载bar模块，按需加载
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = ec.init(document.getElementById('main'));
+
+                option = {
+                    tooltip: {   // 这个是鼠标浮动时的工具条，显示鼠标所在区域的数据，trigger这个地方每种图有不同的设置
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: []
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: {show: true},
+                            dataView: {show: true, readOnly: false},
+                            magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                            restore: {show: true},
+                            saveAsImage: {show: true}
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: []
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '商品营销',
+                            type: 'line',
+                            stack: '总量',
+                            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+                            data: []
+                        }
+                    ]
+                };
+                var time = window.location.href;
+                $.ajax({
+                    url: "/index/getData.do",
+                    type: 'get',
+                    dataType: 'json',
+                    data:{'time':time.split("?")[1].split("=")[1]},
+                    success: function (jsons) {
+                        var Item = function () {
+                            return {
+                                name: '',
+                                type: 'line', //柱状图这么显示，折线图为line
+                                data: []
+                            }
+                        };
+                        var legends = [];
+                        var Series = [];
+                        var json = jsons.list;
+                        for (var i = 0; i < json.length; i++) {
+                            var it = new Item();
+                            it.name = json[i].name;
+                            legends.push(json[i].name);
+                            it.data = json[i].datas;
+                            Series.push(it);
+                        }
+
+                        option.xAxis[0].data = jsons.xdata;   //这块必须要写xAxis[0]
+                        option.legend.data = legends;
+                        option.series = Series; // 设置图表
+                        myChart.setOption(option);// 重新加载图表
+                    },
+                    error: function () {
+                        alert("数据加载失败！请检查数据链接是否正确");
+                    }
+                });
+
+            }
+        );
+</script>
+</body>

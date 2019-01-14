@@ -427,6 +427,8 @@
                         </ul>
                     </li>
 				    <!-- 菜单 /-->
+                    <button type="button" onclick="showExcelOrderData()" class="fa fa-folder">订单导出</button>
+                    <button type="button" onclick="showExcelGoodsData()" class="fa fa-folder">商品导出</button>
 
                 </ul>
             </section>
@@ -454,5 +456,15 @@
     </div>
 
 </body>
+<script type="text/javascript">
+    function showExcelOrderData() {
+        var UrlHost = window.location.host
+        location.href="http://"+UrlHost+"/showExcel/download.do";
+    }
+    function showExcelGoodsData() {
+        var UrlHost = window.location.host
+        location.href="http://"+UrlHost+"/showExcel/goods.do";
+    }
+</script>
 
 </html>
