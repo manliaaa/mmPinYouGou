@@ -17,7 +17,7 @@ app.service('userService',function($http){
 	this.add=function(entity,smscode){
 		return  $http.post('../user/add.do?smscode='+smscode,entity );
 	}
-	//修改 
+	//修改
 	this.update=function(entity){
 		return  $http.post('../user/update.do',entity );
 	}
@@ -33,5 +33,10 @@ app.service('userService',function($http){
 	this.sendCode=function(phone){
 		return $http.get('../user/sendCode.do?phone='+phone);
 	}
+
+	//保存个人信息
+	this.userMessage=function (entity) {
+		return $http.get('../user/userMessage.do',entity);
+    }
 	
 });

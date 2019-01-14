@@ -18,6 +18,22 @@ public class UserController {
     @Reference
     private UserService userService;
 
+
+    /**
+     * 保存用户信息  基本资料
+     * @param user  用户昵称
+     * @return
+     */
+    @RequestMapping("/userMessage")
+    public Result userMessage(User user) {
+        try {
+            userService.UserMessage(user);
+            return new Result(true, "保存成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result(false, "保存失败");
+        }
+    }
     /**
      * 发送验证码
      * @param phone 手机号

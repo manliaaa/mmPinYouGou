@@ -13,7 +13,4 @@ app.controller('ordersController' ,function($scope,$controller,ordersService) {
         );
     }
 
-
-
-
 });

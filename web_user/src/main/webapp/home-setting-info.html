@@ -10,6 +10,9 @@
 
     <link rel="stylesheet" type="text/css" href="css/webbase.css" />
     <link rel="stylesheet" type="text/css" href="css/pages-seckillOrder.css" />
+
+	<script type="text/javascript" src="js/service/userService.js"></script>
+	<script type="text/javascript" src="js/controller/userController.js"></script>
 </head>
 
 <body>
@@ -206,7 +209,7 @@ $(function(){
                         </ul>
                         <div class="tab-content ">
                             <div id="one" class="tab-pane active">
-                                <form id="form-msg" class="sui-form form-horizontal">
+                                <form id="form-msg" class="sui-form form-horizontal" ng-repeat="list in entity">
                                     <div class="control-group">
                                         <label for="inputName" class="control-label">昵称：</label>
                                         <div class="controls">

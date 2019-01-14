@@ -110,6 +110,28 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    // 所在地
+    private String address;
+
+    // 职业
+    private String job;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
     public Long getId() {
         return id;
     }
